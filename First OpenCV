@@ -1,0 +1,28 @@
+import cv2
+
+# Listen on UDP port 5600 (default OpenHD video stream)
+video_stream_address = 'udp://0.0.0.0:5600'
+
+# Open the video stream
+cap = cv2.VideoCapture(video_stream_address)
+
+if not cap.isOpened():
+    print("❌ Error: Unable to open video stream on port 5600")
+    exit()
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        print("❌ Failed to read frame")
+        break
+
+    # Display the video
+    cv2.imshow('OpenHD Live Feed', frame)
+
+    # >>> INSERT YOUR LANE ASSIST PROCESSING HERE <<<
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
